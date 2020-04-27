@@ -1,17 +1,1 @@
-﻿  LLL-2.cpp
-C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(17,20): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(25,9): warning C4244: *=: преобразование "const double" в "float", возможна потеря данных
-C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(31,20): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(44,20): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(74,70): warning C4244: return: преобразование "_Ty" в "float", возможна потеря данных
-          with
-          [
-              _Ty=double
-          ]
-C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(79,11): warning C4244: return: преобразование "double" в "float", возможна потеря данных
-C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(82,30): warning C4244: return: преобразование "_Ty" в "float", возможна потеря данных
-          with
-          [
-              _Ty=double
-          ]
-  LLL-2.vcxproj -> C:\Users\Матвей\source\repos\LLL-2\Debug\LLL-2.exe
+﻿LINK : fatal error LNK1104: не удается открыть файл "python38_d.lib"

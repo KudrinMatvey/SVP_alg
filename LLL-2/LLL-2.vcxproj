@@ -72,12 +72,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\Матвей\AppData\Local\Programs\Python\Python38-32\include;C:\Users\Матвей\AppData\Local\Programs\Python\Python38-32\Lib\site-packages\numpy\core\include</IncludePath>
+    <LibraryPath>C:\Users\Матвей\AppData\Local\Programs\Python\Python38-32\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\Матвей\AppData\Local\Programs\Python\Python38-32\include;C:\Users\Матвей\AppData\Local\Programs\Python\Python38-32\Lib\site-packages\numpy\core\include</IncludePath>
+    <LibraryPath>C:\Users\Матвей\AppData\Local\Programs\Python\Python38-32\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -120,6 +124,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,7 +155,9 @@
     <ClCompile Include="LLL-2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\AppData\Local\Programs\Python\Python38-32\include\Python.h" />
     <ClInclude Include="LLL-2.h" />
+    <ClInclude Include="matplotlibcpp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
