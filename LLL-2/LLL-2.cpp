@@ -39,7 +39,7 @@ void getCofactor(Matrix<_type>& A, Matrix<_type>& temp, int p, int q, int n)
 
                 // Row is filled, so increase row index and 
                 // reset col index 
-                if (j == n - 1)
+                if (j == n -1)
                 {
                     j = 0;
                     i++;
@@ -382,11 +382,11 @@ vector<_type> kleinSample(Matrix<_type>& B, Matrix<_type>& GSO, float deviation,
         //randomised rounding
         //z =  rand() / RAND_MAX > sigma ? d : 0;
         z = round(distribution(generator));
-        std::cout << z << " " ;
+        //std::cout << z << " " ;
         c = c - z * B[i];
         v = v + z * B[i];
     }
-    std::cout << std::endl;
+    //std::cout << std::endl;
     return v;
 }
 
@@ -568,9 +568,19 @@ int main() {
     int currReduced = 1, currRedusing = 0; // текущий вектор
                                            /*{ {201 , 37},
                                                                                    {1648,  297 } };*/
-    Matrix<_type> matrix = { {15, 23, 11},
-                             {32, 1, 1},
-                             {46, 15, 3} };
+    //Matrix<_type> matrix = { {15, 23, 11},
+    //                         {32, 1, 1},
+    //                         {46, 15, 3} };
+    Matrix<_type> matrix = { {11, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+    {0, 11, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0 ,11, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 11, 0, 0, 0, 0, 0, 0},
+    {2, 4, 3, 5, 1, 0, 0, 0, 0, 0},
+    {1 ,- 5, -4  ,2  ,0  ,1  ,0  ,0  ,0,  0},
+    {-4, 3, -1, 1, 0, 0, 1, 0, 0, 0},
+    {-2,-3,-4,-1, 0, 0, 0, 1, 0, 0},
+    {-5, -5, 3, 3, 0, 0, 0, 0, 1, 0},
+    {-4, -3, 2, -5, 0, 0, 0, 0, 0, 1} };
     randomInBall(15, 5);
     Matrix<_type> matrix2 = matrix;
     Matrix<_type> matrix3 = matrix;
