@@ -1,6 +1,7 @@
 ﻿// LLL-2.cpp : Этот файл содержит функцию "main". Здесь начинается и
 // заканчивается выполнение программы.
 //
+#include <random>
 
 #include <iostream>
 
@@ -257,8 +258,11 @@ void printVS(const vector<_type>& vspace) {
 }
 void printVec(const vector<_type>& v) {
     cout << endl;
+    cout << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<<endl;
     for (auto& d : v)
         cout << d << ' ';
+    cout << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" << endl;
+
 }
 
 float mu(int k1, int k2, Matrix<_type>* m, Matrix<_type>* gsm) {
@@ -355,21 +359,37 @@ void preparePlot(Matrix<_type> res, Matrix<_type> og) {
                     }
                 }
         }
-        // plt::plot_surface(x, y, z);
-    }
-
-    // m.insert({ make_pair(t[0], t[1]) });
-    // for (auto& v : m)
-    //{
-    //	x.push_back(v.first);
-    //	y.push_back(v.second);
-    //}
+     }
     plt::plot({ 0 }, { 0 }, "bo");
     plt::plot({ res.at(0).at(0) }, { res.at(0).at(1) }, "r+");
     plt::plot({ res.at(1).at(0) }, { res.at(1).at(1) }, "r+");
     plt::plot({ og.at(0).at(0) }, { og.at(0).at(1) }, "g*");
     plt::plot({ og.at(1).at(0) }, { og.at(1).at(1) }, "g*");
 }
+//https://tel.archives-ouvertes.fr/tel-01245066v2/document
+vector<_type> kleinSample(Matrix<_type>& B, Matrix<_type>& GSO, float deviation, vector<_type>& c) {
+    vector<_type> v(B.size(), 0);
+    std::random_device mch;
+    std::default_random_engine generator(mch());
+
+    //vector<_type> z(B.size());
+    double d, z;
+    for (int i = B.size() - 1; i >= 0; i--) {
+        double length = squaredLengthOfVector(GSO.at(i));
+        d = dotProduct(c, GSO.at(i)) / length ;
+        double sigma = deviation / sqrt(length);
+        std::normal_distribution<double> distribution(d, 1);
+        //randomised rounding
+        //z =  rand() / RAND_MAX > sigma ? d : 0;
+        z = round(distribution(generator));
+        std::cout << z << " " ;
+        c = c - z * B[i];
+        v = v + z * B[i];
+    }
+    std::cout << std::endl;
+    return v;
+}
+
 // todo discover
 vector<_type> sample_gaussian(Matrix<_type>& B) {
     vector<_type> a;
@@ -419,7 +439,10 @@ vector<_type> gaussSieve(Matrix<_type>& B) {
             S.pop_back();
         }
         else {
-            v_new = sample_gaussian(B);
+            //v_new = sample_gaussian(B);
+            Matrix<_type> gramSmidt = gSchmidt(B);
+            vector<_type> a(3, 0);
+            v_new = kleinSample(B, gramSmidt, 1, a);
         }
         v_new = gauss_reduce(v_new, L, S);
         if (!v_new.size() ||
@@ -474,44 +497,46 @@ void ListReduce2(vector<_type> p, Matrix<_type> L) {
     }
 }
 //https://math.stackexchange.com/questions/396382/what-does-this-dollar-sign-over-arrow-in-function-mapping-mean
-vector<_type> ListSieve(Matrix<_type>& B, float mu) {
-    vector<vector<_type>> L;
-    float delta = 1 - (1 / B.size());
-    float eps = 0.685;
-    int K = pow(2, KabatianskyLevenshteinC(B) * B.size());
-    for (int i = 0; i < K;++i) {
-//        vector<_type> e = randomInBall(B.size(), eps * mu);
-//        vector<_type> p = mod(e, B);
-        vector<_type> v = sample_gaussian(B);
-        ListReduce(v, L, delta);
-//        vector<_type> v = p - e;
-        auto k = std::find(L.begin(), L.end(), v);
-        if (k != L.end() || L.size() == 0) {
-            k = std::find_if(L.begin(), L.end(), [&v, &mu](vector<_type>& vj) {return squaredLengthOfVector(&(v - vj)) < mu * mu; });
-            if (k != L.end()) {
-                return *k;
-            }
-            L.push_back(v);
-        }   
-    }
-    vector<_type> shortestVector = L[0];
-    for (int i = 1; i < L.size(); i++) {
-        if (squaredLengthOfVector(shortestVector) > squaredLengthOfVector(L[i])) {
-            shortestVector = L[i];
-        }
-    }
-    return shortestVector;
-}
+//vector<_type> ListSieve(Matrix<_type>& B, float mu) {
+//    vector<vector<_type>> L;
+//    float delta = 1 - (1 / B.size());
+//    float eps = 0.685;
+//    int K = pow(2, KabatianskyLevenshteinC(B) * B.size());
+//    for (int i = 0; i < K;++i) {
+////        vector<_type> e = randomInBall(B.size(), eps * mu);
+////        vector<_type> p = mod(e, B);
+//        vector<_type> v = sample_gaussian(B);
+//        ListReduce(v, L, delta);
+////        vector<_type> v = p - e;
+//        auto k = std::find(L.begin(), L.end(), v);
+//        if (k != L.end() || L.size() == 0) {
+//            k = std::find_if(L.begin(), L.end(), [&v, &mu](vector<_type>& vj) {return squaredLengthOfVector(&(v - vj)) < mu * mu; });
+//            if (k != L.end()) {
+//                return *k;
+//            }
+//            L.push_back(v);
+//        }   
+//    }
+//    vector<_type> shortestVector = L[0];
+//    for (int i = 1; i < L.size(); i++) {
+//        if (squaredLengthOfVector(shortestVector) > squaredLengthOfVector(L[i])) {
+//            shortestVector = L[i];
+//        }
+//    }
+//    return shortestVector;
+//}
 //https://eprint.iacr.org/2014/714.pdf
 vector<_type> ListSieve2(Matrix<_type>& B, float mu) {
     vector<vector<_type>> L;
     float delta = 1 - (1 / B.size());
     float eps = 0.685;
+    Matrix<_type> gramSmidt = gSchmidt(B);
+    vector<_type> a(3, 0);
     // c?
-    int K = pow(2, KabatianskyLevenshteinC(B) * B.size());
-    //int K = 100;
+    //int K = pow(2, KabatianskyLevenshteinC(B) * B.size());
+    int K = 3;
     for (int i = 0; i < K;) {
-        vector<_type> v = sample_gaussian(B);
+        vector<_type> v = kleinSample(B, gramSmidt, 1, a);
         ListReduce2(v, L);
         bool isZero = 1;
         for (auto i : v) {
@@ -526,16 +551,6 @@ vector<_type> ListSieve2(Matrix<_type>& B, float mu) {
         else {
             L.push_back(v);
         }
-
-//        vector<_type> v = p - e;
-        /*auto k = std::find(L.begin(), L.end(), v);
-        if (k != L.end() || L.size() == 0) {
-            k = std::find_if(L.begin(), L.end(), [&v, &mu](vector<_type>& vj) {return squaredLengthOfVector(&(v - vj)) < mu * mu; });
-            if (k != L.end()) {
-                return *k;
-            }
-            L.push_back(v);
-        }   */
     }
     vector<_type> shortestVector = L[0];
     for (int i = 1; i < L.size(); i++) {
@@ -560,14 +575,18 @@ int main() {
     Matrix<_type> matrix2 = matrix;
     Matrix<_type> matrix3 = matrix;
     Matrix<_type> original(matrix2);
-    Matrix<_type> gramSmidt;
-    LLL(matrix);
+    Matrix<_type> gramSmidt = gSchmidt(matrix);
+    //LLL(matrix);
     printVS(matrix);
     vector<_type> sv = gaussSieve(matrix2);
     float shortestVectorLength = sqrt(squaredLengthOfVector(sv));
     printVec(sv);
     float mu = shortestVectorLength;
     printVec(ListSieve2(matrix3, mu));
+   /* for (int i = 0; i < 10; i++) {
+        vector<_type> a(3, 0);
+        printVec(kleinSample(matrix, gramSmidt, 1, a));
+    }*/
     }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
