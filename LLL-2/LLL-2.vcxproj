@@ -158,6 +158,7 @@
     <ClInclude Include="..\..\..\..\AppData\Local\Programs\Python\Python38-32\include\Python.h" />
     <ClInclude Include="LLL-2.h" />
     <ClInclude Include="matplotlibcpp.h" />
+    <ClInclude Include="solver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

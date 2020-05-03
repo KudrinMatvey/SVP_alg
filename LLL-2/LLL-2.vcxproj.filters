@@ -29,5 +29,8 @@
     <ClInclude Include="..\..\..\..\AppData\Local\Programs\Python\Python38-32\include\Python.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="solver.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

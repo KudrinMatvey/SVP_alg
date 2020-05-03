@@ -1,6 +1,4 @@
-﻿// LLL-2.cpp : Этот файл содержит функцию "main". Здесь начинается и
-// заканчивается выполнение программы.
-//
+﻿
 #include <random>
 
 #include <iostream>
@@ -20,7 +18,6 @@ namespace plt = matplotlibcpp;
 template <class T> using Matrix = vector<vector<T>>;
 using _type = float;
 constexpr double _c = 0.75;
-
 
 void getCofactor(Matrix<_type>& A, Matrix<_type>& temp, int p, int q, int n)
 {
@@ -333,7 +330,6 @@ void preparePlot(Matrix<_type> res, Matrix<_type> og) {
         for (int i = -maxSize; i < maxSize; i++) {
             for (int j = -maxSize; j < maxSize; j++) {
                 vector<_type> t = i * res.at(0) + j * res.at(1);
-                // m.insert({ make_pair(t[0], t[1]) });
                 if (-boundX < t[0] < boundX && -boundY < t[1] < boundY) {
                     x.push_back(t.at(0));
                     y.push_back(t.at(1));
@@ -351,7 +347,6 @@ void preparePlot(Matrix<_type> res, Matrix<_type> og) {
             for (int j = -maxSize; j < maxSize; j++)
                 for (int k = -maxSize; k < maxSize; j++) {
                     vector<_type> t = i * res.at(0) + j * res.at(1) + k * res.at(2);
-                    // m.insert({ make_pair(t[0], t[1]) });
                     if (-boundX < t[0] < boundX && -boundY < t[1] < boundY) {
                         x.push_back(t.at(0));
                         y.push_back(t.at(1));
@@ -372,15 +367,12 @@ vector<_type> kleinSample(Matrix<_type>& B, Matrix<_type>& GSO, float deviation,
     std::random_device mch;
     std::default_random_engine generator(mch());
 
-    //vector<_type> z(B.size());
     double d, z;
     for (int i = B.size() - 1; i >= 0; i--) {
         double length = squaredLengthOfVector(GSO.at(i));
         d = dotProduct(c, GSO.at(i)) / length ;
         double sigma = deviation / sqrt(length);
         std::normal_distribution<double> distribution(d, 1);
-        //randomised rounding
-        //z =  rand() / RAND_MAX > sigma ? d : 0;
         z = round(distribution(generator));
         //std::cout << z << " " ;
         c = c - z * B[i];
@@ -431,16 +423,17 @@ vector<_type> gauss_reduce(vector<_type>& v_new, Matrix<_type>& L,
 vector<_type> gaussSieve(Matrix<_type>& B) {
     Matrix<_type> L, S;
     vector<_type> v_new;
+    Matrix<_type> gramSmidt = gSchmidt(B);
     int K = 0;
-    int c = KabatianskyLevenshteinC(B);
+    //int c = KabatianskyLevenshteinC(B);
+
+    int c = 10;
     do {
         if (S.size() > 0) {
             v_new = S.back();
             S.pop_back();
         }
         else {
-            //v_new = sample_gaussian(B);
-            Matrix<_type> gramSmidt = gSchmidt(B);
             vector<_type> a(3, 0);
             v_new = kleinSample(B, gramSmidt, 1, a);
         }
@@ -448,6 +441,8 @@ vector<_type> gaussSieve(Matrix<_type>& B) {
         if (!v_new.size() ||
             std::count(v_new.begin(), v_new.end(), 0) == v_new.size()) {
             K++;
+            printVS(L);
+
         }
         else {
             L.push_back(v_new);
@@ -475,17 +470,8 @@ vector<_type> mod(vector<_type> vec, Matrix<_type> m) {
     inverse(m, r);
     return m * roundV(r * vec);
 }
-void ListReduce(vector<_type> vec, Matrix<_type> L, float delta) {
-    bool cont = true;
-    while (cont) {
-        auto f = std::find_if(L.begin(), L.end(), [&vec, &delta](vector<_type>& l) {
-            return squaredLengthOfVector(&(vec - l)) <= delta * delta * squaredLengthOfVector(&vec);
-            });
-        if (f == L.end()) return;
-        vec = vec - *f;
-    }
-}
-void ListReduce2(vector<_type> p, Matrix<_type> L) {
+
+void ListReduce(vector<_type> p, Matrix<_type> L) {
     bool cont = true;
     while (cont) {
         auto f = std::find_if(L.begin(), L.end(), [&p](vector<_type>& v) {
@@ -497,47 +483,15 @@ void ListReduce2(vector<_type> p, Matrix<_type> L) {
     }
 }
 //https://math.stackexchange.com/questions/396382/what-does-this-dollar-sign-over-arrow-in-function-mapping-mean
-//vector<_type> ListSieve(Matrix<_type>& B, float mu) {
-//    vector<vector<_type>> L;
-//    float delta = 1 - (1 / B.size());
-//    float eps = 0.685;
-//    int K = pow(2, KabatianskyLevenshteinC(B) * B.size());
-//    for (int i = 0; i < K;++i) {
-////        vector<_type> e = randomInBall(B.size(), eps * mu);
-////        vector<_type> p = mod(e, B);
-//        vector<_type> v = sample_gaussian(B);
-//        ListReduce(v, L, delta);
-////        vector<_type> v = p - e;
-//        auto k = std::find(L.begin(), L.end(), v);
-//        if (k != L.end() || L.size() == 0) {
-//            k = std::find_if(L.begin(), L.end(), [&v, &mu](vector<_type>& vj) {return squaredLengthOfVector(&(v - vj)) < mu * mu; });
-//            if (k != L.end()) {
-//                return *k;
-//            }
-//            L.push_back(v);
-//        }   
-//    }
-//    vector<_type> shortestVector = L[0];
-//    for (int i = 1; i < L.size(); i++) {
-//        if (squaredLengthOfVector(shortestVector) > squaredLengthOfVector(L[i])) {
-//            shortestVector = L[i];
-//        }
-//    }
-//    return shortestVector;
-//}
 //https://eprint.iacr.org/2014/714.pdf
-vector<_type> ListSieve2(Matrix<_type>& B, float mu) {
+vector<_type> ListSieve(Matrix<_type>& B) {
     vector<vector<_type>> L;
-    float delta = 1 - (1 / B.size());
-    float eps = 0.685;
     Matrix<_type> gramSmidt = gSchmidt(B);
     vector<_type> a(3, 0);
-    // c?
-    //int K = pow(2, KabatianskyLevenshteinC(B) * B.size());
-    int K = 3;
+    int K = 10;
     for (int i = 0; i < K;) {
         vector<_type> v = kleinSample(B, gramSmidt, 1, a);
-        ListReduce2(v, L);
+        ListReduce(v, L);
         bool isZero = 1;
         for (auto i : v) {
             if (i != 0) {
@@ -547,6 +501,7 @@ vector<_type> ListSieve2(Matrix<_type>& B, float mu) {
         }
         if (isZero) {
             i++;
+            printVS(L);
         }
         else {
             L.push_back(v);
@@ -571,16 +526,23 @@ int main() {
     //Matrix<_type> matrix = { {15, 23, 11},
     //                         {32, 1, 1},
     //                         {46, 15, 3} };
-    Matrix<_type> matrix = { {11, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-    {0, 11, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0 ,11, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 11, 0, 0, 0, 0, 0, 0},
-    {2, 4, 3, 5, 1, 0, 0, 0, 0, 0},
-    {1 ,- 5, -4  ,2  ,0  ,1  ,0  ,0  ,0,  0},
-    {-4, 3, -1, 1, 0, 0, 1, 0, 0, 0},
-    {-2,-3,-4,-1, 0, 0, 0, 1, 0, 0},
-    {-5, -5, 3, 3, 0, 0, 0, 0, 1, 0},
-    {-4, -3, 2, -5, 0, 0, 0, 0, 0, 1} };
+    //Matrix<_type> matrix = { {11, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+    //{0, 11, 0, 0, 0, 0, 0, 0, 0, 0},
+    //{0, 0 ,11, 0, 0, 0, 0, 0, 0, 0},
+    //{0, 0, 0, 11, 0, 0, 0, 0, 0, 0},
+    //{2, 4, 3, 5, 1, 0, 0, 0, 0, 0},
+    //{1 ,- 5, -4  ,2  ,0  ,1  ,0  ,0  ,0,  0},
+    //{-4, 3, -1, 1, 0, 0, 1, 0, 0, 0},
+    //{-2,-3,-4,-1, 0, 0, 0, 1, 0, 0},
+    //{-5, -5, 3, 3, 0, 0, 0, 0, 1, 0},
+    //{-4, -3, 2, -5, 0, 0, 0, 0, 0, 1} };
+    Matrix<_type> matrix(10, vector<_type>(10));
+    for (int i = 0; i < 10; i++) {
+        for (size_t j = 0; j < 10; j++)
+        {
+            matrix[i][j] = rand();
+        }
+    }
     randomInBall(15, 5);
     Matrix<_type> matrix2 = matrix;
     Matrix<_type> matrix3 = matrix;
@@ -591,8 +553,7 @@ int main() {
     vector<_type> sv = gaussSieve(matrix2);
     float shortestVectorLength = sqrt(squaredLengthOfVector(sv));
     printVec(sv);
-    float mu = shortestVectorLength;
-    printVec(ListSieve2(matrix3, mu));
+    printVec(ListSieve(matrix3));
    /* for (int i = 0; i < 10; i++) {
         vector<_type> a(3, 0);
         printVec(kleinSample(matrix, gramSmidt, 1, a));
