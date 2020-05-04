@@ -1,1 +1,123 @@
-﻿LINK : fatal error LNK1104: не удается открыть файл "python38_d.lib"
+﻿  LLL-2.cpp
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(99,33): warning C4244: =: преобразование "int" в "_type", возможна потеря данных
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(113,13): warning C4244: инициализация: преобразование "_type" в "int", возможна потеря данных
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(123,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(125,27): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(131,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(132,27): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(158,26): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(160,30): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(186,35): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(197,35): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(239,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(240,35): warning C4244: =: преобразование "const _Ty" в "_Ty", возможна потеря данных
+          with
+          [
+              _Ty=int
+          ]
+          and
+          [
+              _Ty=_type
+          ]
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(242,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(308,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(310,31): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(312,21): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(317,16): warning C4244: return: преобразование "double" в "int", возможна потеря данных
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(326,27): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(346,20): warning C4244: инициализация: преобразование "_Ty" в "int", возможна потеря данных
+          with
+          [
+              _Ty=_type
+          ]
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(347,20): warning C4244: инициализация: преобразование "_Ty" в "int", возможна потеря данных
+          with
+          [
+              _Ty=_type
+          ]
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(351,20): warning C4804: <: небезопасное использование типа "bool" в операции
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(351,71): warning C4804: <: небезопасное использование типа "bool" в операции
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(361,20): warning C4244: инициализация: преобразование "_Ty" в "int", возможна потеря данных
+          with
+          [
+              _Ty=_type
+          ]
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(362,20): warning C4244: инициализация: преобразование "_Ty" в "int", возможна потеря данных
+          with
+          [
+              _Ty=_type
+          ]
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(363,20): warning C4244: инициализация: преобразование "_Ty" в "int", возможна потеря данных
+          with
+          [
+              _Ty=_type
+          ]
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(368,24): warning C4804: <: небезопасное использование типа "bool" в операции
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(368,75): warning C4804: <: небезопасное использование типа "bool" в операции
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(468,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(479,33): warning C4244: =: преобразование "int" в "_Ty", возможна потеря данных
+          with
+          [
+              _Ty=_type
+          ]
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(531,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(141,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(228): message : выполняется компиляция ссылки на экземпляр шаблон функции "double dotProduct<_type,_type>(const std::vector<_type,std::allocator<_type>> &,const std::vector<_type,std::allocator<_type>> &)"
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(150,1): warning C4244: *=: преобразование "const double" в "float", возможна потеря данных
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(228): message : выполняется компиляция ссылки на экземпляр шаблон функции "std::vector<_type,std::allocator<_type>> operator *<_type>(const double &,const std::vector<_type,std::allocator<_type>> &)"
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(170,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(244): message : выполняется компиляция ссылки на экземпляр шаблон функции "std::vector<_type,std::allocator<_type>> subtract<int,_type>(const std::vector<int,std::allocator<int>> &,const std::vector<_type,std::allocator<_type>> &)"
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(177,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(254): message : выполняется компиляция ссылки на экземпляр шаблон функции "std::vector<_type,std::allocator<_type>> operator -<_type,_type>(const std::vector<_type,std::allocator<_type>> &,const std::vector<_type,std::allocator<_type>> &)"
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(290,14): warning C4244: return: преобразование "double" в "float", возможна потеря данных
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(302): message : выполняется компиляция ссылки на экземпляр шаблон функции "float mu<int,_type>(std::vector<int,std::allocator<int>> &,std::vector<_type,std::allocator<_type>> &)"
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(150,1): warning C4244: *=: преобразование "const double" в "int", возможна потеря данных
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(302): message : выполняется компиляция ссылки на экземпляр шаблон функции "std::vector<int,std::allocator<int>> operator *<int>(const double &,const std::vector<int,std::allocator<int>> &)"
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(298,30): warning C4244: return: преобразование "_Ty" в "float", возможна потеря данных
+          with
+          [
+              _Ty=double
+          ]
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(469): message : выполняется компиляция ссылки на экземпляр шаблон функции "float squaredLengthOfVector<int>(std::vector<int,std::allocator<int>> &)"
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(294,30): warning C4244: return: преобразование "_Ty" в "float", возможна потеря данных
+          with
+          [
+              _Ty=double
+          ]
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(312): message : выполняется компиляция ссылки на экземпляр шаблон функции "float squaredLengthOfVector<int>(std::vector<int,std::allocator<int>> *)"
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(282,77): warning C4244: return: преобразование "_Ty" в "float", возможна потеря данных
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(332): message : выполняется компиляция ссылки на экземпляр шаблон функции "float mu<int>(int,int,std::vector<std::vector<int,std::allocator<int>>,std::allocator<std::vector<int,std::allocator<int>>>> *,std::vector<std::vector<_type,std::allocator<_type>>,std::allocator<std::vector<_type,std::allocator<_type>>>> *)"
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(215,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(345): message : выполняется компиляция ссылки на экземпляр шаблон функции "std::vector<_type,std::allocator<_type>> operator +<_type>(const std::vector<_type,std::allocator<_type>> &,const std::vector<_type,std::allocator<_type>> &)"
+F:\programs\visual studio\VC\Tools\MSVC\14.25.28610\include\numeric(137,26): warning C4244: =: преобразование "_Ty2" в "_Ty", возможна потеря данных
+          with
+          [
+              _Ty2=float
+          ]
+          and
+          [
+              _Ty=int
+          ]
+F:\programs\visual studio\VC\Tools\MSVC\14.25.28610\include\numeric(158): message : выполняется компиляция ссылки на экземпляр шаблон функции "_Ty std::inner_product<_InIt1,_InIt2,int,std::plus<void>,std::multiplies<void>>(_InIt1,_InIt1,_InIt2,_Ty,_BinOp1,_BinOp2)"
+          with
+          [
+              _Ty=int,
+              _InIt1=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<int>>>,
+              _InIt2=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_type>>>,
+              _BinOp1=std::plus<void>,
+              _BinOp2=std::multiplies<void>
+          ]
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(282): message : выполняется компиляция ссылки на экземпляр шаблон функции "_Ty std::inner_product<std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_Ty>>>,std::_Vector_iterator<std::_Vector_val<std::_Simple_types<float>>>,T>(const _InIt1,const _InIt1,const _InIt2,_Ty)"
+          with
+          [
+              _Ty=int,
+              T=int,
+              _InIt1=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<int>>>,
+              _InIt2=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_type>>>
+          ]
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\LLL-2.cpp(332): message : выполняется компиляция ссылки на экземпляр шаблон функции "float mu<int>(int,int,std::vector<std::vector<int,std::allocator<int>>,std::allocator<std::vector<int,std::allocator<int>>>> *,std::vector<std::vector<_type,std::allocator<_type>>,std::allocator<std::vector<_type,std::allocator<_type>>>> *)"
+  LLL-2.vcxproj -> C:\Users\Матвей\source\repos\LLL-2\Debug\LLL-2.exe

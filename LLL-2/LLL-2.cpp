@@ -9,12 +9,12 @@
 
 #include <numeric>
 
-#include "matplotlibcpp.h"
+//#include "matplotlibcpp.h"
 
 #include "LLL-2.h"
 
 using namespace std;
-namespace plt = matplotlibcpp;
+//namespace plt = matplotlibcpp;
 template <class T> using Matrix = vector<vector<T>>;
 using _type = float;
 constexpr double _c = 0.75;
@@ -135,20 +135,23 @@ bool inverse(Matrix<_type>& A, Matrix<_type>& inverse)
     return true;
 }
 
-
-double dotProduct(const vector<_type>& v1, const vector<_type>& v2) {
+template<typename T, typename T2>
+double dotProduct(const vector<T>& v1, const vector<T2>& v2) {
     double ret = 0;
     for (int i = 0; i < v1.size(); ++i)
         ret += (v1.at(i) * v2.at(i));
     return ret;
 }
 
-vector<_type> operator*(const double& c, const vector<_type>& v) {
-    vector<_type> ret = v;
+template<typename T>
+vector<T> operator*(const double& c, const vector<T>& v) {
+    vector<T> ret = v;
     for (auto& d : ret)
         d *= c;
     return ret;
 }
+
+
 vector<_type> operator*(Matrix<_type>& M, const vector<_type>& v) {
     int n = v.size();
     vector<_type> res(n, 0);
@@ -161,9 +164,16 @@ vector<_type> operator*(Matrix<_type>& M, const vector<_type>& v) {
     }
     return res;
 }
-
-vector<_type> operator-(const vector<_type>& v1, const vector<_type>& v2) {
-    vector<_type> ret;
+template<typename T, typename T2>
+vector<T2> subtract(const vector<T>& v1, const vector<T2>& v2) {
+    vector<T2> ret;
+    for (int i = 0; i < v1.size(); ++i)
+        ret.push_back(v1.at(i) - v2.at(i));
+    return ret;
+}
+template<typename T, typename T2>
+vector<T> operator-(const vector<T>& v1, const vector<T2>& v2) {
+    vector<T> ret;
     for (int i = 0; i < v1.size(); ++i)
         ret.push_back(v1.at(i) - v2.at(i));
     return ret;
@@ -199,8 +209,9 @@ bool operator==(const vector<_type>& v1, const vector<_type>& v2) {
     }
     else return false;
 }
-vector<_type> operator+(const vector<_type>& v1, const vector<_type>& v2) {
-    vector<_type> ret;
+template<typename T>
+vector<T> operator+(const vector<T>& v1, const vector<T>& v2) {
+    vector<T> ret;
     for (int i = 0; i < v1.size(); ++i)
         ret.push_back(v1.at(i) + v2.at(i));
     return ret;
@@ -218,12 +229,19 @@ vector<_type> proj(const vector<_type>& v1, const vector<_type>& v2) {
     return proj;
 }
 
-Matrix<_type> gSchmidt(const Matrix<_type>& vspace) {
-    Matrix<_type> uspace;
-    for (int i = 0; i < vspace.size(); ++i) {
-        uspace.push_back(vspace.at(i));
+vector<_type> proj(const vector<_type>& v1, const vector<int>& v2) {
+    vector<_type> proj = (dotProduct(v1, v2) / dotProduct(v1, v1)) * v1;
+    return proj;
+}
+
+Matrix<_type> gSchmidt(const Matrix<int>& vspace) {
+    Matrix<_type> uspace(vspace.size(), vector<_type>(vspace[0].size()));
+    for (int i = 0; i < vspace[0].size(); i++) {
+        uspace[0][i] = vspace[0][i];
+    }
+    for (int i = 1; i < vspace.size(); ++i) {
         for (int j = 0; j < i; ++j) {
-            uspace.at(i) = uspace.at(i) - proj(uspace.at(j), vspace.at(i));
+            uspace.at(i) = subtract(vspace.at(i), proj(uspace.at(j), vspace.at(i)));
         }
     }
     return uspace;
@@ -238,8 +256,8 @@ Matrix<_type> gSchmidt(const Matrix<_type>& vspace, int limit) {
     }
     return uspace;
 }
-
-void printVS(const Matrix<_type>& vspace) {
+template<typename T>
+void printVS(const Matrix<T>& vspace) {
     for (auto& v : vspace) {
         cout << '|';
         for (auto& d : v)
@@ -247,13 +265,8 @@ void printVS(const Matrix<_type>& vspace) {
         cout << "|\n";
     }
 }
-void printVS(const vector<_type>& vspace) {
-    cout << '|';
-    for (auto& d : vspace)
-        cout << d << ' ';
-    cout << "|\n";
-}
-void printVec(const vector<_type>& v) {
+template<typename T>
+void printVec(const vector<T>& v) {
     cout << endl;
     cout << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<<endl;
     for (auto& d : v)
@@ -261,31 +274,36 @@ void printVec(const vector<_type>& v) {
     cout << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" << endl;
 
 }
-
-float mu(int k1, int k2, Matrix<_type>* m, Matrix<_type>* gsm) {
-    vector<_type>* a = &m -> at(k1);
+template<typename T>
+float mu(int k1, int k2, Matrix<T>* m, Matrix<_type>* gsm) {
+    T init = 0;
+    vector<T>* a = &m -> at(k1);
     vector<_type>* b = &gsm -> at(k2);
-    return std::inner_product(a -> begin(), a -> end(), b -> begin(), 0.0) /
-        std::inner_product(b -> begin(), b -> end(), b -> begin(), 0.0);
+    return std::inner_product(a -> begin(), a -> end(), b -> begin(), init) /
+        std::inner_product(b -> begin(), b -> end(), b -> begin(), init);
 }
-float mu(vector<_type>& a, vector<_type>& b) {
-    double d = std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
-    double dd = std::inner_product(b.begin(), b.end(), b.begin(), 0.0);
+template<typename T, typename T2>
+float mu(vector<T>& a, vector<T2>& b) {
+    float init = 0;
+    double d = std::inner_product(a.begin(), a.end(), b.begin(), init);
+    double dd = std::inner_product(b.begin(), b.end(), b.begin(), init);
     return d / dd;
 }
-float squaredLengthOfVector(vector<_type>* v) {
+template<typename T>
+float squaredLengthOfVector(vector<T>* v) {
     return std::inner_product(v -> begin(), v -> end(), v -> begin(), 0.0);
 }
-float squaredLengthOfVector(vector<_type>& v) {
+template<typename T>
+float squaredLengthOfVector(vector<T>& v) {
     return std::inner_product(v.begin(), v.end(), v.begin(), 0.0);
 }
-vector<_type> reduce(vector<_type>& gsreducing, vector<_type>& target,
-    vector<_type>& reducing) {
-    vector<_type> t = target - round(mu(target, gsreducing)) * reducing;
+vector<int> reduce(vector<_type>& gsreducing, vector<int>& target,
+    vector<int>& reducing) {
+    vector<int> t = target - round(mu(target, gsreducing)) * reducing;
     return t;
 }
 
-int KabatianskyLevenshteinC(Matrix<_type>& M) {
+int KabatianskyLevenshteinC(Matrix<int>& M) {
     float angle = 1;
     for (int i = 0; i < M.size(); i++) {
         auto v1 = M[i];
@@ -299,7 +317,7 @@ int KabatianskyLevenshteinC(Matrix<_type>& M) {
     return fmax((int)(-1.0 / 2.0 * log(1 - cos(angle)) - 0.099), 1);
 }
 
-void LLL(Matrix<_type>& B) {
+void LLL(Matrix<int>& B) {
     bool cont;
     Matrix<_type> gramSmidt;
     do {
@@ -336,7 +354,7 @@ void preparePlot(Matrix<_type> res, Matrix<_type> og) {
                 }
             }
         }
-        plt::plot(x, y, ".");
+        //plt::plot(x, y, ".");
     }
     if (res.size() == 3) {
         vector<_type> bounds = 2 * og[0] + 2 * og[1];
@@ -355,15 +373,15 @@ void preparePlot(Matrix<_type> res, Matrix<_type> og) {
                 }
         }
      }
-    plt::plot({ 0 }, { 0 }, "bo");
+    /*plt::plot({ 0 }, { 0 }, "bo");
     plt::plot({ res.at(0).at(0) }, { res.at(0).at(1) }, "r+");
     plt::plot({ res.at(1).at(0) }, { res.at(1).at(1) }, "r+");
     plt::plot({ og.at(0).at(0) }, { og.at(0).at(1) }, "g*");
-    plt::plot({ og.at(1).at(0) }, { og.at(1).at(1) }, "g*");
+    plt::plot({ og.at(1).at(0) }, { og.at(1).at(1) }, "g*");*/
 }
 //https://tel.archives-ouvertes.fr/tel-01245066v2/document
-vector<_type> kleinSample(Matrix<_type>& B, Matrix<_type>& GSO, float deviation, vector<_type>& c) {
-    vector<_type> v(B.size(), 0);
+vector<int> kleinSample(Matrix<int>& B, Matrix<_type>& GSO, float deviation, vector<int>& c) {
+    vector<int> v(c.size(), 0);
     std::random_device mch;
     std::default_random_engine generator(mch());
 
@@ -390,11 +408,10 @@ vector<_type> sample_gaussian(Matrix<_type>& B) {
         a = a + (5 - rand() % 10) * b;
     return a;
 }
-vector<_type> gauss_reduce(vector<_type>& v_new, Matrix<_type>& L,
-    Matrix<_type>& S) {
+vector<int> gauss_reduce(vector<int>& v_new, Matrix<int>& L, Matrix<int>& S) {
     bool cont = true;
     while (cont) {
-        auto vn = std::find_if(L.begin(), L.end(), [&v_new](vector<_type>& v) {
+        auto vn = std::find_if(L.begin(), L.end(), [&v_new](vector<int>& v) {
             return squaredLengthOfVector(&v) <= squaredLengthOfVector(&v_new) &&
                 squaredLengthOfVector(&(v_new - v)) <=
                 squaredLengthOfVector(&v_new);
@@ -407,7 +424,7 @@ vector<_type> gauss_reduce(vector<_type>& v_new, Matrix<_type>& L,
         }
     }
     auto newEnd =
-        std::remove_if(L.begin(), L.end(), [&v_new, &S](vector<_type>& v) {
+        std::remove_if(L.begin(), L.end(), [&v_new, &S](vector<int>& v) {
         if (squaredLengthOfVector(&v) > squaredLengthOfVector(&v_new) &&
             squaredLengthOfVector(&(v - v_new)) <= squaredLengthOfVector(&v)) {
             S.push_back(v - v_new);
@@ -420,21 +437,21 @@ vector<_type> gauss_reduce(vector<_type>& v_new, Matrix<_type>& L,
     return v_new;
 }
 // https://cseweb.ucsd.edu/~daniele/papers/Sieve.pdf
-vector<_type> gaussSieve(Matrix<_type>& B) {
-    Matrix<_type> L, S;
-    vector<_type> v_new;
+vector<int> gaussSieve(Matrix<int>& B) {
+    Matrix<int> L, S;
+    vector<int> v_new;
     Matrix<_type> gramSmidt = gSchmidt(B);
     int K = 0;
-    //int c = KabatianskyLevenshteinC(B);
+    int c = KabatianskyLevenshteinC(B);
 
-    int c = 10;
+    //int c = 10;
     do {
         if (S.size() > 0) {
             v_new = S.back();
             S.pop_back();
         }
         else {
-            vector<_type> a(3, 0);
+            vector<int> a(B[0].size(), 0);
             v_new = kleinSample(B, gramSmidt, 1, a);
         }
         v_new = gauss_reduce(v_new, L, S);
@@ -442,13 +459,12 @@ vector<_type> gaussSieve(Matrix<_type>& B) {
             std::count(v_new.begin(), v_new.end(), 0) == v_new.size()) {
             K++;
             printVS(L);
-
         }
         else {
             L.push_back(v_new);
         }
     } while (K < c);
-    vector<_type> shortestVector = S[0];
+    vector<int> shortestVector = S[0];
     for (int i = 1; i < S.size(); i++) {
         if (squaredLengthOfVector(shortestVector) > squaredLengthOfVector(S[i])) {
             shortestVector = S[i];
@@ -471,10 +487,10 @@ vector<_type> mod(vector<_type> vec, Matrix<_type> m) {
     return m * roundV(r * vec);
 }
 
-void ListReduce(vector<_type> p, Matrix<_type> L) {
+void ListReduce(vector<int>& p, Matrix<int>& L) {
     bool cont = true;
     while (cont) {
-        auto f = std::find_if(L.begin(), L.end(), [&p](vector<_type>& v) {
+        auto f = std::find_if(L.begin(), L.end(), [&p](vector<int>& v) {
             return squaredLengthOfVector(&(p - v)) <= squaredLengthOfVector(p) &&
                 squaredLengthOfVector(p ) >= squaredLengthOfVector(v);
             });
@@ -484,17 +500,20 @@ void ListReduce(vector<_type> p, Matrix<_type> L) {
 }
 //https://math.stackexchange.com/questions/396382/what-does-this-dollar-sign-over-arrow-in-function-mapping-mean
 //https://eprint.iacr.org/2014/714.pdf
-vector<_type> ListSieve(Matrix<_type>& B) {
-    vector<vector<_type>> L;
+vector<int> ListSieve(Matrix<int>& B) {
+    Matrix<int> L;
     Matrix<_type> gramSmidt = gSchmidt(B);
-    vector<_type> a(3, 0);
+    vector<int> a(B[0].size(), 0);
     int K = 10;
-    for (int i = 0; i < K;) {
-        vector<_type> v = kleinSample(B, gramSmidt, 1, a);
+    for (int i = 0, k = 0; i < K;k++) {
+        if (k % 100 == 90) {
+            printVS(L);
+        }
+        vector<int> v = kleinSample(B, gramSmidt, 1, a);
         ListReduce(v, L);
-        bool isZero = 1;
-        for (auto i : v) {
-            if (i != 0) {
+        bool isZero = true;
+        for (auto in : v) {
+            if (in != 0) {
                 isZero = false;
                 break;
             }
@@ -507,7 +526,7 @@ vector<_type> ListSieve(Matrix<_type>& B) {
             L.push_back(v);
         }
     }
-    vector<_type> shortestVector = L[0];
+    vector<int> shortestVector = L[0];
     for (int i = 1; i < L.size(); i++) {
         if (squaredLengthOfVector(shortestVector) > squaredLengthOfVector(L[i])) {
             shortestVector = L[i];
@@ -517,40 +536,36 @@ vector<_type> ListSieve(Matrix<_type>& B) {
 }
 
 int main() {
-    vector<int> v_new;
-    cout << (bool)(v_new.begin() == v_new.end());
-
-    int currReduced = 1, currRedusing = 0; // текущий вектор
-                                           /*{ {201 , 37},
-                                                                                   {1648,  297 } };*/
-    //Matrix<_type> matrix = { {15, 23, 11},
-    //                         {32, 1, 1},
-    //                         {46, 15, 3} };
-    //Matrix<_type> matrix = { {11, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-    //{0, 11, 0, 0, 0, 0, 0, 0, 0, 0},
-    //{0, 0 ,11, 0, 0, 0, 0, 0, 0, 0},
-    //{0, 0, 0, 11, 0, 0, 0, 0, 0, 0},
-    //{2, 4, 3, 5, 1, 0, 0, 0, 0, 0},
-    //{1 ,- 5, -4  ,2  ,0  ,1  ,0  ,0  ,0,  0},
-    //{-4, 3, -1, 1, 0, 0, 1, 0, 0, 0},
-    //{-2,-3,-4,-1, 0, 0, 0, 1, 0, 0},
-    //{-5, -5, 3, 3, 0, 0, 0, 0, 1, 0},
-    //{-4, -3, 2, -5, 0, 0, 0, 0, 0, 1} };
-    Matrix<_type> matrix(10, vector<_type>(10));
+   // текущий вектор
+    /*{ {201 , 37},
+      {1648,  297 } };*/
+   /* Matrix<int> matrix = { {15, 23, 11},
+                             {32, 1, 1},
+                             {46, 15, 3} };*/
+    Matrix<int> matrix = { {11, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+    {0, 11, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0 ,11, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 11, 0, 0, 0, 0, 0, 0},
+    {2, 4, 3, 5, 1, 0, 0, 0, 0, 0},
+    {1 ,- 5, -4  ,2  ,0  ,1  ,0  ,0  ,0,  0},
+    {-4, 3, -1, 1, 0, 0, 1, 0, 0, 0},
+    {-2,-3,-4,-1, 0, 0, 0, 1, 0, 0},
+    {-5, -5, 3, 3, 0, 0, 0, 0, 1, 0},
+    {-4, -3, 2, -5, 0, 0, 0, 0, 0, 1} };
+   /* Matrix<int> matrix(10, vector<int>(10));
     for (int i = 0; i < 10; i++) {
         for (size_t j = 0; j < 10; j++)
         {
             matrix[i][j] = rand();
         }
-    }
-    randomInBall(15, 5);
-    Matrix<_type> matrix2 = matrix;
-    Matrix<_type> matrix3 = matrix;
-    Matrix<_type> original(matrix2);
-    Matrix<_type> gramSmidt = gSchmidt(matrix);
-    //LLL(matrix);
+    }*/
+    Matrix<int> matrix2 = matrix;
+    Matrix<int> matrix3 = matrix;
+    Matrix<int> original(matrix2);
+    Matrix<float> gramSmidt = gSchmidt(matrix);
+    LLL(matrix);
     printVS(matrix);
-    vector<_type> sv = gaussSieve(matrix2);
+    vector<int> sv = gaussSieve(matrix2);
     float shortestVectorLength = sqrt(squaredLengthOfVector(sv));
     printVec(sv);
     printVec(ListSieve(matrix3));
