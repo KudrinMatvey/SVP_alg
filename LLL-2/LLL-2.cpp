@@ -1,4 +1,4 @@
-﻿
+
 #include <random>
 
 #include <iostream>
@@ -8,10 +8,12 @@
 #include <map>
 
 #include <numeric>
-
+#include <fstream>
+#include "ConsoleApplication1.h"
+#include <chrono>
+#include <cstdlib> 
+#include <ctime>
 //#include "matplotlibcpp.h"
-
-#include "LLL-2.h"
 
 using namespace std;
 //namespace plt = matplotlibcpp;
@@ -19,7 +21,8 @@ template <class T> using Matrix = vector<vector<T>>;
 using _type = float;
 constexpr double _c = 0.75;
 
-void getCofactor(Matrix<_type>& A, Matrix<_type>& temp, int p, int q, int n)
+template<typename T>
+void getCofactor(Matrix<T>& A, Matrix<T>& temp, int p, int q, int n)
 {
     int i = 0, j = 0;
 
@@ -36,7 +39,7 @@ void getCofactor(Matrix<_type>& A, Matrix<_type>& temp, int p, int q, int n)
 
                 // Row is filled, so increase row index and 
                 // reset col index 
-                if (j == n -1)
+                if (j == n - 1)
                 {
                     j = 0;
                     i++;
@@ -48,14 +51,15 @@ void getCofactor(Matrix<_type>& A, Matrix<_type>& temp, int p, int q, int n)
 
 /* Recursive function for finding determinant of matrix.
    n is current dimension of A[][]. */
-_type determinant(Matrix<_type>& A,  int n)
+template<typename T>
+T determinant(Matrix<T>& A, int n)
 {
 
     //  Base case : if matrix contains single element 
     if (n == 1)
         return A[0][0];
-    _type D = 0; // Initialize result 
-    Matrix<_type> temp(n, vector<_type> (n , 0)); // To store cofactors 
+    T D = 0; // Initialize result 
+    Matrix<T> temp(n, vector<T>(n, 0)); // To store cofactors 
 
     float sign = 1;  // To store sign multiplier 
 
@@ -77,7 +81,7 @@ _type determinant(Matrix<_type>& A,  int n)
 void adjoint(Matrix<_type>& A, Matrix<_type>& adj)
 {
     int n = A.size();
-    if (n== 1)
+    if (n == 1)
     {
         adj[0][0] = 1;
         return;
@@ -178,22 +182,38 @@ vector<T> operator-(const vector<T>& v1, const vector<T2>& v2) {
         ret.push_back(v1.at(i) - v2.at(i));
     return ret;
 }
-bool operator==(const vector<_type>& v1, const vector<_type>& v2) {
+template<typename T>
+bool operator==(const vector<T>& v1, const vector<T>& v2) {
     if (v1.size() == v2.size()) {
         if (v1.size()) {
-            if(v1[0] == v2[0])
-            { 
-                for (int i = 1; i < v1.size(); i++)
-                {
-                    if (v1[i] != v2[i])
+            if (v1[0] == v2[0])
+            {
+                if (v1[0] == 0) {
+                    int sign = 0;
+                    for (int i = 1; i < v1.size(); i++) {
+                        if (v1[i] == 0 && v2[i] == 0) continue;
+                        if (sign == 0) {
+                            if (v1[i] == v2[i]) sign = 1;
+                            else if (v1[i] == -v2[i]) sign = -1;
+                            else return false;
+                        }
+                        else if (v1[i] != sign * v2[i]) {
+                            return false;
+                        }
+                    }
+                } else {
+                    for (int i = 1; i < v1.size(); i++)
                     {
-                        return false;
+                        if (v1[i] != v2[i])
+                        {
+                            return false;
+                        }
                     }
                 }
                 return true;
             }
-            if(v1[0] == -v2[0])
-            { 
+            if (v1[0] == -v2[0])
+            {
                 for (int i = 1; i < v1.size(); i++)
                 {
                     if (v1[i] != -v2[i])
@@ -266,21 +286,41 @@ void printVS(const Matrix<T>& vspace) {
     }
 }
 template<typename T>
+void printVS(const Matrix<T>& vspace, ostream& file) {
+    file << '[';
+    for (auto& v : vspace) {
+        file << '[';
+        for (auto& d : v)
+            file << d << ' ';
+        file << "]\n";
+    }
+    file << "]\n";
+}
+template<typename T>
 void printVec(const vector<T>& v) {
     cout << endl;
-    cout << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"<<endl;
+    cout << "$$$$$$$$$$$$$$$$$$$$$$$$" << endl;
     for (auto& d : v)
         cout << d << ' ';
-    cout << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" << endl;
+    cout << "$$$$$$$$$$$$$$$$$$$$$$$$" << endl;
+
+}
+template<typename T>
+void printVec(const vector<T>& v, ostream& file) {
+    file << endl;
+    file << "$$$$$$$$$$$$$$$$$$$$$$$$" << endl;
+    for (auto& d : v)
+        file << d << ' ';
+    file << endl <<"$$$$$$$$$$$$$$$$$$$$$$$$" << endl;
 
 }
 template<typename T>
 float mu(int k1, int k2, Matrix<T>* m, Matrix<_type>* gsm) {
     T init = 0;
-    vector<T>* a = &m -> at(k1);
-    vector<_type>* b = &gsm -> at(k2);
-    return std::inner_product(a -> begin(), a -> end(), b -> begin(), init) /
-        std::inner_product(b -> begin(), b -> end(), b -> begin(), init);
+    vector<T>* a = &m->at(k1);
+    vector<_type>* b = &gsm->at(k2);
+    return std::inner_product(a->begin(), a->end(), b->begin(), init) /
+        std::inner_product(b->begin(), b->end(), b->begin(), init);
 }
 template<typename T, typename T2>
 float mu(vector<T>& a, vector<T2>& b) {
@@ -291,7 +331,7 @@ float mu(vector<T>& a, vector<T2>& b) {
 }
 template<typename T>
 float squaredLengthOfVector(vector<T>* v) {
-    return std::inner_product(v -> begin(), v -> end(), v -> begin(), 0.0);
+    return std::inner_product(v->begin(), v->end(), v->begin(), 0.0);
 }
 template<typename T>
 float squaredLengthOfVector(vector<T>& v) {
@@ -317,10 +357,12 @@ int KabatianskyLevenshteinC(Matrix<int>& M) {
     return fmax((int)(-1.0 / 2.0 * log(1 - cos(angle)) - 0.099), 1);
 }
 
-void LLL(Matrix<int>& B) {
+void LLL(Matrix<int>& B, ostream& o) {
     bool cont;
     Matrix<_type> gramSmidt;
+    int iter = 0;
     do {
+        iter++;
         gramSmidt = gSchmidt(B);
         cont = false;
         for (int i = 1; i < B.size(); i++) {
@@ -336,6 +378,7 @@ void LLL(Matrix<int>& B) {
             }
         }
     } while (cont);
+    o << "lll iter : " << iter << "|\n";
 }
 void preparePlot(Matrix<_type> res, Matrix<_type> og) {
     map<_type, _type> m;
@@ -372,7 +415,7 @@ void preparePlot(Matrix<_type> res, Matrix<_type> og) {
                     }
                 }
         }
-     }
+    }
     /*plt::plot({ 0 }, { 0 }, "bo");
     plt::plot({ res.at(0).at(0) }, { res.at(0).at(1) }, "r+");
     plt::plot({ res.at(1).at(0) }, { res.at(1).at(1) }, "r+");
@@ -388,7 +431,7 @@ vector<int> kleinSample(Matrix<int>& B, Matrix<_type>& GSO, float deviation, vec
     double d, z;
     for (int i = B.size() - 1; i >= 0; i--) {
         double length = squaredLengthOfVector(GSO.at(i));
-        d = dotProduct(c, GSO.at(i)) / length ;
+        d = dotProduct(c, GSO.at(i)) / length;
         double sigma = deviation / sqrt(length);
         std::normal_distribution<double> distribution(d, 1);
         z = round(distribution(generator));
@@ -411,10 +454,13 @@ vector<_type> sample_gaussian(Matrix<_type>& B) {
 vector<int> gauss_reduce(vector<int>& v_new, Matrix<int>& L, Matrix<int>& S) {
     bool cont = true;
     while (cont) {
+        auto same = std::find_if(L.begin(), L.end(), [&v_new](vector<int>& v) {return v_new == v; });
+        if (same != L.end()) {
+            return vector<int>(v_new.size());
+        }
         auto vn = std::find_if(L.begin(), L.end(), [&v_new](vector<int>& v) {
             return squaredLengthOfVector(&v) <= squaredLengthOfVector(&v_new) &&
-                squaredLengthOfVector(&(v_new - v)) <=
-                squaredLengthOfVector(&v_new);
+                squaredLengthOfVector(&(v_new - v)) <= squaredLengthOfVector(&v_new);
             });
         if (vn != L.end()) {
             v_new = v_new - *vn;
@@ -437,15 +483,17 @@ vector<int> gauss_reduce(vector<int>& v_new, Matrix<int>& L, Matrix<int>& S) {
     return v_new;
 }
 // https://cseweb.ucsd.edu/~daniele/papers/Sieve.pdf
-vector<int> gaussSieve(Matrix<int>& B) {
+// c= 500
+vector<int> gaussSieve(Matrix<int>& B, ostream& o) {
     Matrix<int> L, S;
     vector<int> v_new;
     Matrix<_type> gramSmidt = gSchmidt(B);
-    int K = 0;
-    int c = KabatianskyLevenshteinC(B);
+    int K = 0, iter = 0;
+    //int c = KabatianskyLevenshteinC(B);
 
-    //int c = 10;
+    int c = 10;
     do {
+        iter++;
         if (S.size() > 0) {
             v_new = S.back();
             S.pop_back();
@@ -458,18 +506,18 @@ vector<int> gaussSieve(Matrix<int>& B) {
         if (!v_new.size() ||
             std::count(v_new.begin(), v_new.end(), 0) == v_new.size()) {
             K++;
-            printVS(L);
         }
         else {
             L.push_back(v_new);
         }
-    } while (K < c);
-    vector<int> shortestVector = S[0];
-    for (int i = 1; i < S.size(); i++) {
-        if (squaredLengthOfVector(shortestVector) > squaredLengthOfVector(S[i])) {
-            shortestVector = S[i];
+    } while (K < c || L.size() == 0);
+    vector<int> shortestVector = L[0];
+    for (int i = 1; i < L.size(); i++) {
+        if (squaredLengthOfVector(shortestVector) > squaredLengthOfVector(L[i])) {
+            shortestVector = L[i];
         }
     }
+    o << "gauss iter : " << iter << "|\n";
     return shortestVector;
 }
 
@@ -478,7 +526,7 @@ vector<_type> randomInBall(const int dimm, float r) {
     for (int i = 0; i < dimm; i++) {
         randVector[i] = (rand() % (int)(r + 1));
     }
-    return (r * (rand()/double(RAND_MAX)) / sqrt(squaredLengthOfVector(randVector))) * randVector;
+    return (r * (rand() / double(RAND_MAX)) / sqrt(squaredLengthOfVector(randVector))) * randVector;
 }
 //https://crypto.stackexchange.com/questions/29661/how-to-find-the-value-of-a-vector-modulo-a-basis-in-lattice-based-cryptography/29701#29701
 vector<_type> mod(vector<_type> vec, Matrix<_type> m) {
@@ -490,9 +538,14 @@ vector<_type> mod(vector<_type> vec, Matrix<_type> m) {
 void ListReduce(vector<int>& p, Matrix<int>& L) {
     bool cont = true;
     while (cont) {
+        auto same = std::find(L.begin(), L.end(), p);
+        if (same != L.end()) {
+            p =  vector<int>(p.size());
+            return;
+        }
         auto f = std::find_if(L.begin(), L.end(), [&p](vector<int>& v) {
-            return squaredLengthOfVector(&(p - v)) <= squaredLengthOfVector(p) &&
-                squaredLengthOfVector(p ) >= squaredLengthOfVector(v);
+            return squaredLengthOfVector(&(p - v)) < squaredLengthOfVector(p) &&
+                squaredLengthOfVector(p) >= squaredLengthOfVector(v);
             });
         if (f == L.end()) return;
         p = p - *f;
@@ -500,15 +553,15 @@ void ListReduce(vector<int>& p, Matrix<int>& L) {
 }
 //https://math.stackexchange.com/questions/396382/what-does-this-dollar-sign-over-arrow-in-function-mapping-mean
 //https://eprint.iacr.org/2014/714.pdf
-vector<int> ListSieve(Matrix<int>& B) {
+vector<int> ListSieve(Matrix<int>& B, ostream& o) {
     Matrix<int> L;
     Matrix<_type> gramSmidt = gSchmidt(B);
     vector<int> a(B[0].size(), 0);
-    int K = 10;
-    for (int i = 0, k = 0; i < K;k++) {
-        if (k % 100 == 90) {
-            printVS(L);
-        }
+
+    int K = 200;
+    int iter =0;
+    for (int i = 0, k = 0; i < K || L.size() == 0; k++) {
+        iter++;
         vector<int> v = kleinSample(B, gramSmidt, 1, a);
         ListReduce(v, L);
         bool isZero = true;
@@ -520,7 +573,6 @@ vector<int> ListSieve(Matrix<int>& B) {
         }
         if (isZero) {
             i++;
-            printVS(L);
         }
         else {
             L.push_back(v);
@@ -532,60 +584,82 @@ vector<int> ListSieve(Matrix<int>& B) {
             shortestVector = L[i];
         }
     }
+    o << "list iter : " << iter << "|\n";
     return shortestVector;
+}
+Matrix<int> generateLattice(int dimm,int diff, int iter, bool print, ofstream& file) {
+    Matrix<int> m(dimm, vector<int>(dimm, 0));
+    file << "dimm: " << dimm << " iter: " << iter << " diff: " << diff << "|\n";
+    int summ = 0;
+    srand(time(0));
+    file << '[';
+    for (auto& v : m) {
+        file << '[';
+        for (auto& el : v) {
+            float f = rand();
+            el = f / RAND_MAX * (float)diff * (float)dimm;
+            summ += el;
+            file << el << ' ';
+        }
+        file << "]\n";
+    }
+    file << "]\n";
+    file << " summ: " << summ << "\n\n";
+    return m;
 }
 
 int main() {
-   // текущий вектор
-    /*{ {201 , 37},
-      {1648,  297 } };*/
-   /* Matrix<int> matrix = { {15, 23, 11},
-                             {32, 1, 1},
-                             {46, 15, 3} };*/
-    Matrix<int> matrix = { {11, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-    {0, 11, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0 ,11, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 11, 0, 0, 0, 0, 0, 0},
-    {2, 4, 3, 5, 1, 0, 0, 0, 0, 0},
-    {1 ,- 5, -4  ,2  ,0  ,1  ,0  ,0  ,0,  0},
-    {-4, 3, -1, 1, 0, 0, 1, 0, 0, 0},
-    {-2,-3,-4,-1, 0, 0, 0, 1, 0, 0},
-    {-5, -5, 3, 3, 0, 0, 0, 0, 1, 0},
-    {-4, -3, 2, -5, 0, 0, 0, 0, 0, 1} };
-   /* Matrix<int> matrix(10, vector<int>(10));
-    for (int i = 0; i < 10; i++) {
-        for (size_t j = 0; j < 10; j++)
-        {
-            matrix[i][j] = rand();
+    ofstream myfile;
+    myfile.open("example.txt");
+    try {
+        for (int dimm = 40; dimm < 60; dimm+=2) {
+            for (int diff = 3; diff < 31; diff+=5)
+            {
+                for (int iter = 0; iter < 5; iter++) {
+                    cout << dimm << " " << diff << " " << iter << endl;
+                    Matrix<int> matrix = generateLattice(dimm, diff, iter, true, myfile);
+                    Matrix<int> matrix2 = matrix;
+                    Matrix<int> matrix3 = matrix;
+                    Matrix<int> original(matrix2);
+                    Matrix<float> gramSmidt = gSchmidt(matrix);
+
+                    auto t1 = std::chrono::high_resolution_clock::now();
+                    //LLL(matrix, myfile);
+                    auto t2 = std::chrono::high_resolution_clock::now();
+                    auto duration = std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count();
+                    myfile << "lll " << " duration " << duration;
+                    printVS(matrix, myfile);
+                    myfile << "\n\n";
+
+                    t1 = std::chrono::high_resolution_clock::now();
+                    vector<int> sv = gaussSieve(matrix2, myfile);
+                    t2 = std::chrono::high_resolution_clock::now();
+                    duration = std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count();
+                    myfile << "gauss " << " duration " << duration ;
+                    myfile << "\n\n";
+                    printVec(sv, myfile);
+                    cout << "f\n\n";
+
+
+                    t1 = std::chrono::high_resolution_clock::now();
+                    auto v3 = ListSieve(matrix3, myfile);
+                    t2 = std::chrono::high_resolution_clock::now();
+                    duration = std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count();
+                    myfile << "list " << " duration " << duration;
+                    printVec(v3, myfile);
+
+                    if (!(v3 == sv)) {
+                        printVec(sv, myfile);
+                        myfile << "\n\n\n\n !!!!!! error \n\n\n\n";
+                        cout << "\n\n\n\n !!!!!! error " << squaredLengthOfVector(sv) << " " << squaredLengthOfVector(v3) << " \n\n\n\n";
+                    }
+                    myfile << "\n\n";
+                }
+            }
         }
-    }*/
-    Matrix<int> matrix2 = matrix;
-    Matrix<int> matrix3 = matrix;
-    Matrix<int> original(matrix2);
-    Matrix<float> gramSmidt = gSchmidt(matrix);
-    LLL(matrix);
-    printVS(matrix);
-    vector<int> sv = gaussSieve(matrix2);
-    float shortestVectorLength = sqrt(squaredLengthOfVector(sv));
-    printVec(sv);
-    printVec(ListSieve(matrix3));
-   /* for (int i = 0; i < 10; i++) {
-        vector<_type> a(3, 0);
-        printVec(kleinSample(matrix, gramSmidt, 1, a));
-    }*/
     }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и
-//   другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый
-//   элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий
-//   элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" >
-//   "Открыть" > "Проект" и выберите SLN-файл.
+    catch (exception e) {
+    }
+    myfile.close();
+    return 0;
+}
