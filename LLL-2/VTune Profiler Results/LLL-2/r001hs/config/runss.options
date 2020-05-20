@@ -1,0 +1,16 @@
+-r
+C:\Users\Матвей\source\repos\LLL-2\LLL-2\VTune Profiler Results\LLL-2\r001hs
+--stack-stitching
+--data-limit-mb=1000
+--disk-space-limit=0
+--mrte-type=java,dotnet,python
+--gpu-profiling-type=none
+--itt-config=frame
+--itt-config=task,event,counter
+--stackwalk=offline
+--mrte-mode=auto
+--type=cpu:counters:nostack
+--type=cpu:stack
+--interval=10
+--
+C:\Users\Матвей\source\repos\LLL-2\Debug\LLL-2.exe
