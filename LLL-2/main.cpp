@@ -19,7 +19,7 @@ using _type = float;
 constexpr double _c = 0.75;
 
 template <typename T>
-void getCofactor(Matrix<T> &A, Matrix<T> &temp, int p, int q, int n)
+void getCofactor(Matrix<T>& A, Matrix<T>& temp, int p, int q, int n)
 {
     int i = 0, j = 0;
 
@@ -48,7 +48,7 @@ void getCofactor(Matrix<T> &A, Matrix<T> &temp, int p, int q, int n)
 /* Recursive function for finding determinant of matrix.
    n is current dimension of A[][]. */
 template <typename T>
-T determinant(Matrix<T> &A, int n)
+T determinant(Matrix<T>& A, int n)
 {
 
     //  Base case : if matrix contains single element
@@ -74,7 +74,7 @@ T determinant(Matrix<T> &A, int n)
 }
 
 // Function to get adjoint of A[N][N] in adj[N][N].
-void adjoint(Matrix<_type> &A, Matrix<_type> &adj)
+void adjoint(Matrix<_type>& A, Matrix<_type>& adj)
 {
     int n = A.size();
     if (n == 1)
@@ -107,7 +107,7 @@ void adjoint(Matrix<_type> &A, Matrix<_type> &adj)
 
 // Function to calculate and store inverse, returns false if
 // matrix is singular
-bool inverse(Matrix<_type> &A, Matrix<_type> &inverse)
+bool inverse(Matrix<_type>& A, Matrix<_type>& inverse)
 {
     // Find determinant of A[][]
     int det = determinant(A, A.size());
@@ -137,7 +137,7 @@ bool inverse(Matrix<_type> &A, Matrix<_type> &inverse)
 }
 
 template <typename T, typename T2>
-double dotProduct(const vector<T> &v1, const vector<T2> &v2)
+double dotProduct(const vector<T>& v1, const vector<T2>& v2)
 {
     double ret = 0;
     for (int i = 0; i < v1.size(); ++i)
@@ -146,15 +146,15 @@ double dotProduct(const vector<T> &v1, const vector<T2> &v2)
 }
 
 template <typename T>
-vector<T> operator*(const double &c, const vector<T> &v)
+vector<T> operator*(const double& c, const vector<T>& v)
 {
     vector<T> ret = v;
-    for (auto &d : ret)
+    for (auto& d : ret)
         d *= c;
     return ret;
 }
 
-vector<_type> operator*(Matrix<_type> &M, const vector<_type> &v)
+vector<_type> operator*(Matrix<_type>& M, const vector<_type>& v)
 {
     int n = v.size();
     vector<_type> res(n, 0);
@@ -168,7 +168,7 @@ vector<_type> operator*(Matrix<_type> &M, const vector<_type> &v)
     return res;
 }
 template <typename T, typename T2>
-vector<T2> subtract(const vector<T> &v1, const vector<T2> &v2)
+vector<T2> subtract(const vector<T>& v1, const vector<T2>& v2)
 {
     vector<T2> ret(v1.size());
     for (int i = 0; i < v1.size(); ++i)
@@ -176,7 +176,7 @@ vector<T2> subtract(const vector<T> &v1, const vector<T2> &v2)
     return ret;
 }
 template <typename T, typename T2>
-vector<T> operator-(const vector<T> &v1, const vector<T2> &v2)
+vector<T> operator-(const vector<T>& v1, const vector<T2>& v2)
 {
     vector<T> ret(v1.size());
     for (int i = 0; i < v1.size(); ++i)
@@ -184,7 +184,7 @@ vector<T> operator-(const vector<T> &v1, const vector<T2> &v2)
     return ret;
 }
 template <typename T>
-vector<T> inverse(const vector<T> &v1)
+vector<T> inverse(const vector<T>& v1)
 {
     vector<T> ret(v1.size());
     for (int i = 0; i < v1.size(); ++i)
@@ -192,7 +192,7 @@ vector<T> inverse(const vector<T> &v1)
     return ret;
 }
 template <typename T>
-bool operator==(const vector<T> &v1, const vector<T> &v2)
+bool operator==(const vector<T>& v1, const vector<T>& v2)
 {
     if (v1.size() == v2.size())
     {
@@ -254,7 +254,7 @@ bool operator==(const vector<T> &v1, const vector<T> &v2)
         return false;
 }
 template <typename T>
-vector<T> operator+(const vector<T> &v1, const vector<T> &v2)
+vector<T> operator+(const vector<T>& v1, const vector<T>& v2)
 {
     vector<T> ret(v1.size());
     for (int i = 0; i < v1.size(); ++i)
@@ -270,19 +270,19 @@ vector<_type> roundV(vector<_type> a)
     return a;
 }
 
-vector<_type> proj(const vector<_type> &v1, const vector<_type> &v2)
+vector<_type> proj(const vector<_type>& v1, const vector<_type>& v2)
 {
     vector<_type> proj = (dotProduct(v1, v2) / dotProduct(v1, v1)) * v1;
     return proj;
 }
 
-vector<_type> proj(const vector<_type> &v1, const vector<int> &v2)
+vector<_type> proj(const vector<_type>& v1, const vector<int>& v2)
 {
     vector<_type> proj = (dotProduct(v1, v2) / dotProduct(v1, v1)) * v1;
     return proj;
 }
 
-Matrix<_type> gSchmidt(const Matrix<int> &vspace)
+Matrix<_type> gSchmidt(const Matrix<int>& vspace)
 {
     Matrix<_type> uspace(vspace.size(), vector<_type>(vspace[0].size()));
     for (int i = 0; i < vspace[0].size(); i++)
@@ -298,7 +298,7 @@ Matrix<_type> gSchmidt(const Matrix<int> &vspace)
     }
     return uspace;
 }
-Matrix<_type> gSchmidt(const Matrix<_type> &vspace, int limit)
+Matrix<_type> gSchmidt(const Matrix<_type>& vspace, int limit)
 {
     Matrix<_type> uspace;
     for (int i = 0; i <= limit; ++i)
@@ -312,59 +312,59 @@ Matrix<_type> gSchmidt(const Matrix<_type> &vspace, int limit)
     return uspace;
 }
 template <typename T>
-void printVS(const Matrix<T> &vspace)
+void printVS(const Matrix<T>& vspace)
 {
-    for (auto &v : vspace)
+    for (auto& v : vspace)
     {
         cout << '|';
-        for (auto &d : v)
+        for (auto& d : v)
             cout << d << ' ';
         cout << "|\n";
     }
 }
 template <typename T>
-void printVS(const Matrix<T> &vspace, ostream &file)
+void printVS(const Matrix<T>& vspace, ostream& file)
 {
     file << '[';
-    for (auto &v : vspace)
+    for (auto& v : vspace)
     {
         file << '[';
-        for (auto &d : v)
+        for (auto& d : v)
             file << d << ' ';
         file << "]\n";
     }
     file << "]\n";
 }
 template <typename T>
-void printVec(const vector<T> &v)
+void printVec(const vector<T>& v)
 {
     cout << endl;
     cout << "$$$$$$$$$$$$$$$$$$$$$$$$" << endl;
-    for (auto &d : v)
+    for (auto& d : v)
         cout << d << ' ';
     cout << "$$$$$$$$$$$$$$$$$$$$$$$$" << endl;
 }
 template <typename T>
-void printVec(const vector<T> &v, ostream &file)
+void printVec(const vector<T>& v, ostream& file)
 {
     file << endl;
     file << "$$$$$$$$$$$$$$$$$$$$$$$$" << endl;
-    for (auto &d : v)
+    for (auto& d : v)
         file << d << ' ';
     file << endl
-         << "$$$$$$$$$$$$$$$$$$$$$$$$" << endl;
+        << "$$$$$$$$$$$$$$$$$$$$$$$$" << endl;
 }
 template <typename T>
-float mu(int k1, int k2, Matrix<T> *m, Matrix<_type> *gsm)
+float mu(int k1, int k2, Matrix<T>* m, Matrix<_type>* gsm)
 {
     T init = 0;
-    vector<T> *a = &m->at(k1);
-    vector<_type> *b = &gsm->at(k2);
+    vector<T>* a = &m->at(k1);
+    vector<_type>* b = &gsm->at(k2);
     return std::inner_product(a->begin(), a->end(), b->begin(), init) /
-           std::inner_product(b->begin(), b->end(), b->begin(), init);
+        std::inner_product(b->begin(), b->end(), b->begin(), init);
 }
 template <typename T, typename T2>
-float mu(vector<T> &a, vector<T2> &b)
+float mu(vector<T>& a, vector<T2>& b)
 {
     float init = 0;
     double d = std::inner_product(a.begin(), a.end(), b.begin(), init);
@@ -372,23 +372,23 @@ float mu(vector<T> &a, vector<T2> &b)
     return d / dd;
 }
 template <typename T>
-double squaredLengthOfVector(vector<T> *v)
+double squaredLengthOfVector(vector<T>* v)
 {
     return std::inner_product(v->begin(), v->end(), v->begin(), 0.0);
 }
 template <typename T>
-double squaredLengthOfVector(vector<T> &v)
+double squaredLengthOfVector(vector<T>& v)
 {
     return std::inner_product(v.begin(), v.end(), v.begin(), 0.0);
 }
-vector<int> lll_reduce(vector<_type> &gsreducing, vector<int> &target,
-                       vector<int> &reducing)
+vector<int> lll_reduce(vector<_type>& gsreducing, vector<int>& target,
+    vector<int>& reducing)
 {
     vector<int> t = target - round(mu(target, gsreducing)) * reducing;
     return t;
 }
 
-int KabatianskyLevenshteinC(Matrix<int> &M)
+int KabatianskyLevenshteinC(Matrix<int>& M)
 {
     float angle = 1;
     for (int i = 0; i < M.size(); i++)
@@ -398,14 +398,14 @@ int KabatianskyLevenshteinC(Matrix<int> &M)
         {
             auto v2 = M[j];
             float t = dotProduct(v1, v2) / (sqrt(squaredLengthOfVector(&v1)) *
-                                            sqrt(squaredLengthOfVector(&v2)));
+                sqrt(squaredLengthOfVector(&v2)));
             angle = fmin(angle, t);
         }
     }
     return fmax((int)(-1.0 / 2.0 * log(1 - cos(angle)) - 0.099), 1);
 }
 
-void LLL(Matrix<int> &B, ostream &o)
+void LLL(Matrix<int>& B, ostream& o)
 {
     bool cont;
     Matrix<_type> gramSmidt;
@@ -434,7 +434,7 @@ void LLL(Matrix<int> &B, ostream &o)
     o << "lll iter : " << iter << "|\n";
 }
 
-void LLL(Matrix<int> &B)
+void LLL(Matrix<int>& B)
 {
     bool cont;
     Matrix<_type> gramSmidt;
@@ -507,13 +507,13 @@ void preparePlot(Matrix<_type> res, Matrix<_type> og)
         }
     }
     /*plt::plot({ 0 }, { 0 }, "bo");
-	plt::plot({ res.at(0).at(0) }, { res.at(0).at(1) }, "r+");
-	plt::plot({ res.at(1).at(0) }, { res.at(1).at(1) }, "r+");
-	plt::plot({ og.at(0).at(0) }, { og.at(0).at(1) }, "g*");
-	plt::plot({ og.at(1).at(0) }, { og.at(1).at(1) }, "g*");*/
+    plt::plot({ res.at(0).at(0) }, { res.at(0).at(1) }, "r+");
+    plt::plot({ res.at(1).at(0) }, { res.at(1).at(1) }, "r+");
+    plt::plot({ og.at(0).at(0) }, { og.at(0).at(1) }, "g*");
+    plt::plot({ og.at(1).at(0) }, { og.at(1).at(1) }, "g*");*/
 }
 //https://tel.archives-ouvertes.fr/tel-01245066v2/document
-vector<int> kleinSample(Matrix<int> &B, Matrix<_type> &GSO, float deviation, vector<int> &c)
+vector<int> kleinSample(Matrix<int>& B, Matrix<_type>& GSO, float deviation, vector<int>& c)
 {
     vector<int> v(c.size(), 0);
     std::random_device mch;
@@ -536,7 +536,7 @@ vector<int> kleinSample(Matrix<int> &B, Matrix<_type> &GSO, float deviation, vec
 }
 
 // todo discover
-vector<_type> sample_gaussian(Matrix<_type> &B)
+vector<_type> sample_gaussian(Matrix<_type>& B)
 {
     vector<_type> a;
     a = (5 - rand() % 10) * B.back();
@@ -545,7 +545,7 @@ vector<_type> sample_gaussian(Matrix<_type> &B)
     return a;
 }
 
-bool reduce(vector<int> &p, Matrix<int> &L, vector<double> &lengths)
+bool reduce(vector<int>& p, Matrix<int>& L, vector<double>& lengths)
 {
     double s = squaredLengthOfVector(p);
     for (size_t i = 0; i < L.size(); i++)
@@ -564,17 +564,17 @@ bool reduce(vector<int> &p, Matrix<int> &L, vector<double> &lengths)
     return false;
 }
 
-vector<int> gauss_reduce(vector<int> &v_new, Matrix<int> &L, Matrix<int> &S, vector<double> &lengths)
+vector<int> gauss_reduce(vector<int>& v_new, Matrix<int>& L, Matrix<int>& S, vector<double>& lengths)
 {
     bool cont = true;
     while (cont)
     {
-        auto same = std::find_if(L.begin(), L.end(), [&v_new](vector<int> &v) { return v_new == v; });
+        auto same = std::find_if(L.begin(), L.end(), [&v_new](vector<int>& v) { return v_new == v; });
         if (same != L.end())
         {
             return vector<int>(v_new.size());
         }
-        // 2 СЂР°Р·Р° СЃС‡РёС‚Р°РµС‚СЃСЏ СЂР°Р·РЅРёС†Р°, РјРѕР¶РЅРѕ СЃРѕС…СЂР°РЅРёС‚СЊ Рё СЃСЂР°РІРЅРёС‚СЊ СЃ РјРёРЅРёРјСѓРјРѕРј
+        // 2 раза считается разница, можно сохранить и сравнить с минимумом
         cont = reduce(v_new, L, lengths);
     }
     auto it = L.begin();
@@ -610,7 +610,7 @@ vector<int> gauss_reduce(vector<int> &v_new, Matrix<int> &L, Matrix<int> &S, vec
 }
 // https://cseweb.ucsd.edu/~daniele/papers/Sieve.pdf
 // c= 1000
-vector<int> gaussSieve(Matrix<int> &B, float bound, ostream &o)
+vector<int> gaussSieve(Matrix<int>& B, float bound, ostream& o)
 {
     Matrix<int> L, S;
     vector<int> v_new;
@@ -690,7 +690,7 @@ vector<_type> mod(vector<_type> vec, Matrix<_type> m)
     return m * roundV(r * vec);
 }
 
-void ListReduce(vector<int> &p, Matrix<int> &L, vector<double> &lengths)
+void ListReduce(vector<int>& p, Matrix<int>& L, vector<double>& lengths)
 {
     bool cont = true;
     while (cont)
@@ -704,15 +704,15 @@ void ListReduce(vector<int> &p, Matrix<int> &L, vector<double> &lengths)
         if (!reduce(p, L, lengths))
             return;
         /*auto f = std::find_if(L.begin(), L.end(), [&p](vector<int>& v) {
-			return squaredLengthOfVector(&p) >= squaredLengthOfVector(&v) && squaredLengthOfVector(&(p - v)) < squaredLengthOfVector(&p);
-			});
-		if (f == L.end()) return;
-		p = p - *f;*/
+            return squaredLengthOfVector(&p) >= squaredLengthOfVector(&v) && squaredLengthOfVector(&(p - v)) < squaredLengthOfVector(&p);
+            });
+        if (f == L.end()) return;
+        p = p - *f;*/
     }
 }
 //https://math.stackexchange.com/questions/396382/what-does-this-dollar-sign-over-arrow-in-function-mapping-mean
 //https://eprint.iacr.org/2014/714.pdf
-vector<int> ListSieve(Matrix<int> &B, float bound, ostream &o)
+vector<int> ListSieve(Matrix<int>& B, float bound, ostream& o)
 {
     Matrix<int> L;
     Matrix<_type> gramSmidt = gSchmidt(B);
@@ -771,7 +771,7 @@ vector<int> ListSieve(Matrix<int> &B, float bound, ostream &o)
     return shortestVector;
 }
 
-vector<int> sumVectorsWithCoeff(Matrix<int> &matrix, vector<int> &c)
+vector<int> sumVectorsWithCoeff(Matrix<int>& matrix, vector<int>& c)
 {
     vector<int> a(c.size(), 0);
     for (size_t i = 0; i < c.size(); i++)
@@ -781,7 +781,7 @@ vector<int> sumVectorsWithCoeff(Matrix<int> &matrix, vector<int> &c)
     return a;
 }
 
-bool checkifBiggerByEachCoordinate(vector<int> &a, vector<int> &b)
+bool checkifBiggerByEachCoordinate(vector<int>& a, vector<int>& b)
 {
     for (size_t i = 0; i < a.size(); i++)
     {
@@ -791,7 +791,7 @@ bool checkifBiggerByEachCoordinate(vector<int> &a, vector<int> &b)
     return true;
 }
 
-vector<int> LLLenumerate(Matrix<int> &matrix, ofstream &myfile)
+vector<int> LLLenumerate(Matrix<int>& matrix, ofstream& myfile)
 {
     Matrix<int> enumeration;
     int n = matrix.size();
@@ -814,7 +814,7 @@ vector<int> LLLenumerate(Matrix<int> &matrix, ofstream &myfile)
     }
     for (int i = 0; i < n;)
     {
-        int &a = c[i];
+        int& a = c[i];
         if (a == -lim)
         {
             for (int j = 0; j < i; j++)
@@ -867,19 +867,19 @@ vector<int> LLLenumerate(Matrix<int> &matrix, ofstream &myfile)
 }
 
 //https://web.eecs.umich.edu/~cpeikert/pubs/lattice-survey.pdf
-Matrix<int> generateLattice(int dimm, int diff, int iter, bool print, ofstream &file)
+Matrix<int> generateLattice(int dimm, int diff, int iter, bool print, ofstream& file)
 {
     Matrix<int> m(dimm, vector<int>(dimm, 0));
 
     file << "---------------------------------------------\n\n"
-         << "dimm: " << dimm << " iter: " << iter << " diff: " << diff << "|\n";
+        << "dimm: " << dimm << " iter: " << iter << " diff: " << diff << "|\n";
     int summ = 0;
     //srand(time(0));
     file << '[';
-    for (auto &v : m)
+    for (auto& v : m)
     {
         file << '[';
-        for (auto &el : v)
+        for (auto& el : v)
         {
             float f = rand();
             el = f / RAND_MAX * (float)diff * 20;
@@ -892,12 +892,12 @@ Matrix<int> generateLattice(int dimm, int diff, int iter, bool print, ofstream &
     file << " summ: " << summ << "\n\n";
     return m;
 }
-void preprocessVoronoi(Matrix<int> &B)
+void preprocessVoronoi(Matrix<int>& B)
 {
     LLL(B);
 }
 
-vector<int> findRelevantHelper(Matrix<int> &B, int p, int n)
+vector<int> findRelevantHelper(Matrix<int>& B, int p, int n)
 {
     vector<int> res(B.size(), 0);
     for (size_t i = 0; i < n; i++)
@@ -908,55 +908,117 @@ vector<int> findRelevantHelper(Matrix<int> &B, int p, int n)
         }
         p = p >> 1;
     }
-    for (auto &b : res)
+    for (auto& b : res)
         b = b / 2;
     return res;
 }
 
-Matrix<vector<int>> findRelevant(Matrix<int> &B, Matrix<int> &Voronoi, int H)
+vector<int> CVPP2V(vector<int>& t, Matrix<vector<int>>& Voronoi) {
+    int i = 0;
+    vector<int> t0(t.size()), ti(t.size());
+    while (find_if(Voronoi.begin(), Voronoi.end(), [&ti](auto& v) {
+        return v[0] == ti
+    }) == Voronoi.end()) {
+        float tmp = mu(ti, Voronoi[0][0]);
+        int maxi = 0;
+        for (size_t j = 1; j < Voronoi.size(); j++)
+        {
+            if (tmp < mu(ti,Voronoi[j][0])) {
+                maxi = j;
+            }
+        }
+        ti = ti - ti;
+        i++;
+    }
+
+    return t0 - ti;
+}
+vector<int> CVPP(vector<int>& t, Matrix<int>& B, Matrix<vector<int>>& Voronoi) {
+    vector<int> res(t.size(), 0), tp;
+    for (auto& v : B) {
+        res = res + mu(t, v) * v;
+    }
+    // not sure about this 
+    int p = 0;
+    while(true) {
+        p++;
+        if (squaredLengthOfVector(t) < (squaredLengthOfVector(pow(2, p) * Voronoi[0][0]))) {
+            break;
+        }
+    }
+
+    for (int i = p - 1; i > 0; i--) {
+        tp = tp - CVPP2V(tp, pow(2, i - 1) * Voronoi);
+    }
+    return res - tp;
+}
+
+vector<int> rankReduceCVP(const vector<int>& t, Matrix<int>& B, Matrix<vector<int>>& Voronoi, int H) {
+    vector<int> res(t.size(), 0), v, closest, tmp;
+    int h = mu(t, B.at(Voronoi.size()));
+    float length, tmplength;
+    int i = h - H + 1;
+    res = CVPP(t - h * B.at(Voronoi.size()), Voronoi.back());
+    length = squaredLengthOfVector(res);
+    i++;
+    // todo is it correct?
+    for (; abs(i - h) < H; i++) {
+        v = CVPP(t - i * B.at(Voronoi.size()), Voronoi.back());
+        tmp = v - t;
+        tmplength = squaredLengthOfVector(tmp);
+        if (tmplength < length) {
+            length = tmplength;
+            res = tmp;
+        }
+    }
+    return res;
+}
+
+Matrix<vector<int>> findRelevant(Matrix<int>& B, Matrix<vector<int>>& Voronoi, int H)
 {
     Matrix<vector<int>> res;
     vector<int> t, c;
     int l = pow(2, B.size());
-    // p - РІРµРєС‚РѕСЂ РёР· РЅРµР»РµР№ Рё 1
+    // p - вектор из нелей и 1
     for (int p = 1; p < l; p++)
     {
         t = findRelevantHelper(B, p, B.size());
         c = rankReduceCVP(t, B, Voronoi, H);
         t = 2 * (t - c);
         c = inverse(t);
-        res.push_back({t, c});
+        res.push_back({ t, c });
     }
     return res;
 }
-void removeNonRelevant(Matrix<int> &res)
+void removeNonRelevant(Matrix<vector<int>>& res)
 {
     for (size_t i = 0; i < res.size(); i++)
     {
         for (size_t j = 0; j < res.size(); j++)
         {
-            if(i != j && squaredLengthOfVector(res[j]-0.5*res[i]) <= squaredLengthOfVector(0.5*res[i])) {
+            if (i != j && squaredLengthOfVector(res[j][0] - 0.5 * res[i][0]) <= squaredLengthOfVector(0.5 * res[i][0])) {
                 // debug whats in it
                 res.erase(res.begin() + i);
             }
         }
-        
+
     }
-    
+
 }
 
-Matrix<int> computeVcell(Matrix<int> &B, Matrix<int> &Voronoi, int H)
+Matrix<vector<int>> computeVcell(Matrix<int>& B, Matrix<vector<int>>& Voronoi, int H)
 {
-    Matrix<int> res = findRelevant(B, Voronoi, H);
+    Matrix<vector<int>> res = findRelevant(B, Voronoi, H);
     removeNonRelevant(res);
     return res;
 }
 // https://cseweb.ucsd.edu/~pvoulgar/files/voronoi_full.pdf
-void basicVoronoiCell(Matrix<int> &B)
+void basicVoronoiCell(Matrix<int>& B)
 {
     preprocessVoronoi(B);
-    Matrix<int> Voronoi(1), newB;
-    Voronoi = {B[0], inverse(B[0])};
+    Matrix<vector<int>> Voronoi(1);
+    Matrix<int> newB;
+    Voronoi[0] = { B[0], inverse(B[0]) };
     for (int i = 1; i < B.size(); i++)
     {
         for (size_t j = 0; j < i; j++)
@@ -1039,7 +1101,7 @@ int main()
                         printVec(lllshortest, myfile);
                         myfile << "\n\n";
                         myfile << "gauss length: " << (long)squaredLengthOfVector(sv) << "\n\n list length: " << (long)squaredLengthOfVector(v3)
-                               << "\n\n lll length: " << (long)squaredLengthOfVector(lllshortest) << " \n\n\n\n";
+                            << "\n\n lll length: " << (long)squaredLengthOfVector(lllshortest) << " \n\n\n\n";
                     }
                     else
                     {
